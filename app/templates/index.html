@@ -13,6 +13,8 @@
     <form action="/create_task" method="POST">
         <label for="task_title">Add Task:</label>
         <input type="text" id="title" name="title" placeholder="Enter Task" required>
+        <label for="task_description">Description:</label>
+        <input type="text" id="description" name="description" placeholder="Enter Description">
         <button type="submit">Add</button>
     </form>
 
@@ -20,11 +22,13 @@
     <table>
         <tr>
             <th>Title</th>
+            <th>Description</th>
             <th>Done</th>
         </tr>
         {% for task in tasks %}
             <tr>
                 <td>{{task.title}}</td>
+                <td>{{task.description}}</td>
                 <td>{{task.done}}</td>
                 <td>
                     <form action="/mark_done/{{task.id}}" method="POST">
