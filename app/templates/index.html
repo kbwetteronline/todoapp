@@ -10,52 +10,36 @@
 <body>
     <h1>ToDo List</h1>
 
-    <form action="/add_task" method="post">
+    <form action="/create_task" method="POST">
         <label for="task_title">Add Task:</label>
-        <input type="text" id="task_title" name="task_title" required>
+        <input type="text" id="title" name="title" placeholder="Enter Task" required>
         <button type="submit">Add</button>
     </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Beim Laden der Seite Aufgaben abrufen und anzeigen
-            fetch('/tasks')
-                .then(response => response.json())
-                .then(data => {
-                    const taskList = document.getElementById('task-list');
-                    taskList.innerHTML = '';  // Leeren der vorhandenen Liste
 
-                    data.tasks.forEach(task => {
-                        const li = document.createElement('li');
-                        li.textContent = task.title;
-                        taskList.appendChild(li);
-                    });
-                });
-        });
-
-        // Formular für das Hinzufügen einer neuen Aufgabe abfangen
-        document.getElementById('add-task-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const taskTitle = document.getElementById('task-title').value;
-
-            fetch('/tasks', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title: taskTitle, done: false })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Neu hinzugefügte Aufgabe der Liste hinzufügen
-                    const taskList = document.getElementById('task-list');
-                    const li = document.createElement('li');
-                    li.textContent = data.message;
-                    taskList.appendChild(li);
-                });
-        });
-    </script>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Done</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+                <td>{{task.done}}</td>
+                <td>
+                    <form action="/mark_done/{{task.id}}" method="POST">
+                        <button type="submit">Mark as Done</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/delete_task/{{task.id}}" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 
 </html>
