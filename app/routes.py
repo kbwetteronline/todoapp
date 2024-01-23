@@ -1,5 +1,4 @@
-from flask import render_template, jsonify, request
-from flask import Flask
+from flask import render_template, request, Flask
 from models import db, Task
 
 # Flask-App erstellen
